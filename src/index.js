@@ -19,7 +19,8 @@ class Board extends React.Component {
 
         this.state = ({
             squares: Array(9).fill(null),
-            xIsNext: true
+            xIsNext: true,
+            winner: null
         });
 
         this.handleClick = this.handleClick.bind(this);
@@ -30,15 +31,17 @@ class Board extends React.Component {
         const squares = this.state.squares.slice();
         //Disable the move if there is a winner 
         //or if the square's been marked
-        const winner = calculateWinner(squares);
-        if (winner || squares[i]) {
+        if (this.state.winner || squares[i]) {
             return;
         }
         //Assign the porper value for the clicked square
         squares[i] = this.state.xIsNext ? 'X' : 'O';
+        //Determine if there is a winner due the last move 
+        const winner = calculateWinner(squares);
         this.setState({
             squares: squares,
-            xIsNext: !this.state.xIsNext
+            xIsNext: !this.state.xIsNext,
+            winner: winner
         });
     }
 
@@ -52,11 +55,9 @@ class Board extends React.Component {
     }
 
     render() {
-        const squares = this.state.squares.slice();
-        const winner = calculateWinner(squares);
         let status;
-        if (winner) {
-            status = `Winner: ${winner}`;
+        if (this.state.winner) {
+            status = `Winner: ${this.state.winner}`;
         } else {
             status = `Next player: 
             ${this.state.xIsNext ? 'X' : 'O'}`;
