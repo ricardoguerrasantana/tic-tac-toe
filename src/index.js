@@ -93,3 +93,31 @@ ReactDOM.render(
     <Game />,
     document.getElementById('root')
 );
+
+function calculateWinner (squares) {
+    // this is how you see the board game on the keyboard
+    let lines = [
+        [1, 2, 3], 
+        [4, 5, 6], 
+        [7, 8, 9], 
+        [1, 4, 7], 
+        [2, 5, 8], 
+        [3, 6, 9], 
+        [1, 5, 9], 
+        [3, 5, 7], 
+    ];
+    //this is the correction for make the keyboard to coincide 
+    //with an zero-based index array
+    lines = lines.map(line => {
+        return line.map(number => --number);
+    });
+
+    for (let i = 0; i < lines.length; i++) {
+        const [a, b, c] = lines[i];
+        if (squares[a] && squares[a] === squares[b] && squares[b] === squares[c]) {
+            const winner = squares[a];
+            return winner;
+        }
+    }
+    return null;
+}
