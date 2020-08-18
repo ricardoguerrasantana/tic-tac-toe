@@ -4,7 +4,7 @@ import './index.css';
 
 function Square(props) {
     return (
-        <button 
+        <button
             className="square"
             onClick={props.onClick}
         >
@@ -26,20 +26,27 @@ class Board extends React.Component {
     }
 
     handleClick(i) {
+        //make an inmmutable copy of the games's moves
         const squares = this.state.squares.slice();
+        //Disable the move if there is a winner 
+        //or if the square's been marked
+        const winner = calculateWinner(squares);
+        if (winner || squares[i]) {
+            return;
+        }
+        //Assign the porper value for the clicked square
         squares[i] = this.state.xIsNext ? 'X' : 'O';
-
         this.setState({
-            squares: squares, 
+            squares: squares,
             xIsNext: !this.state.xIsNext
         });
     }
 
     renderSquare(i) {
         return (
-            <Square 
-                value={this.state.squares[i]} 
-                onClick={() => this.handleClick(i)} 
+            <Square
+                value={this.state.squares[i]}
+                onClick={() => this.handleClick(i)}
             />
         );
     }
@@ -94,24 +101,25 @@ ReactDOM.render(
     document.getElementById('root')
 );
 
-function calculateWinner (squares) {
-    // this is how you see the board game on the keyboard
+function calculateWinner(squares) {
+    // Array indexes for posible goals
+    // This is how you see the board game on the keyboard
     let lines = [
-        [1, 2, 3], 
-        [4, 5, 6], 
-        [7, 8, 9], 
-        [1, 4, 7], 
-        [2, 5, 8], 
-        [3, 6, 9], 
-        [1, 5, 9], 
-        [3, 5, 7], 
+        [1, 2, 3],
+        [4, 5, 6],
+        [7, 8, 9],
+        [1, 4, 7],
+        [2, 5, 8],
+        [3, 6, 9],
+        [1, 5, 9],
+        [3, 5, 7],
     ];
-    //this is the correction for make the keyboard to coincide 
-    //with an zero-based index array
+    // This is a correction for make the keyboard to coincide
+    // with an zero-based index array
     lines = lines.map(line => {
         return line.map(number => --number);
     });
-
+    // Loops to check for a winner
     for (let i = 0; i < lines.length; i++) {
         const [a, b, c] = lines[i];
         if (squares[a] && squares[a] === squares[b] && squares[b] === squares[c]) {
@@ -119,5 +127,7 @@ function calculateWinner (squares) {
             return winner;
         }
     }
+    // If the loop doesn't return a winner the function is 
+    // returned as null
     return null;
 }
