@@ -14,53 +14,22 @@ function Square(props) {
 }
 
 class Board extends React.Component {
-    constructor(props) {
-        super(props);
-
-        this.state = ({
-            squares: Array(9).fill(null),
-            xIsNext: true,
-            winner: null
-        });
-
-        this.handleClick = this.handleClick.bind(this);
-    }
-
-    handleClick(i) {
-        //make an inmmutable copy of the games's moves
-        const squares = this.state.squares.slice();
-        //Disable the move if there is a winner 
-        //or if the square's been marked
-        if (this.state.winner || squares[i]) {
-            return;
-        }
-        //Assign the porper value for the clicked square
-        squares[i] = this.state.xIsNext ? 'X' : 'O';
-        //Determine if there is a winner due the last move 
-        const winner = calculateWinner(squares);
-        this.setState({
-            squares: squares,
-            xIsNext: !this.state.xIsNext,
-            winner: winner
-        });
-    }
-
     renderSquare(i) {
         return (
             <Square
-                value={this.state.squares[i]}
-                onClick={() => this.handleClick(i)}
+                value={this.props.squares[i]}
+                onClick={() => this.props.onClick(i)}
             />
         );
     }
 
     render() {
         let status;
-        if (this.state.winner) {
-            status = `Winner: ${this.state.winner}`;
+        if (this.props.winner) {
+            status = `Winner: ${this.props.winner}`;
         } else {
             status = `Next player: 
-            ${this.state.xIsNext ? 'X' : 'O'}`;
+            ${this.props.xIsNext ? 'X' : 'O'}`;
         }
 
         return (
@@ -87,11 +56,62 @@ class Board extends React.Component {
 }
 
 class Game extends React.Component {
+    constructor(props) {
+        super(props);
+
+        this.state = ({
+            history: [
+                {
+                    squares: Array(9).fill(null)
+                }
+            ],
+            xIsNext: true,
+            winner: null
+        });
+
+        this.handleClick = this.handleClick.bind(this);
+    }
+
+    handleClick(i) {
+        // Make an immutable copy of the last set of games's moves
+        const history = this.state.history;
+        const squares = history[history.length - 1].squares.slice();
+        // Disable the move if there is a winner 
+        // or if the square's been marked
+        if (this.state.winner || squares[i]) {
+            return;
+        }
+        //Assign the porper value for the clicked square
+        squares[i] = this.state.xIsNext ? 'X' : 'O';
+        //Determine if there is a winner due the last move 
+        const winner = calculateWinner(squares);
+        this.setState({
+            // Add the last set of game's moves to the array 
+            // which track game's moves
+            history: history.concat(
+                [
+                    {
+                        squares: squares
+                    }
+                ]
+            ),
+            xIsNext: !this.state.xIsNext,
+            winner: winner
+        });
+    }
+
     render() {
+        const history = this.state.history;
+        const squares = history[history.length - 1].squares.slice();
         return (
             <div className="game">
                 <div className="game-board">
-                    <Board />
+                    <Board 
+                        squares={squares} 
+                        xIsNext={this.state.xIsNext} 
+                        winner={this.state.winner} 
+                        onClick={(i) => this.handleClick(i)}
+                    />
                 </div>
                 <div className="game-info">
                     <div>{/* status */}</div>
