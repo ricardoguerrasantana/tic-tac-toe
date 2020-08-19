@@ -57,6 +57,32 @@ class Board extends React.Component {
     }
 }
 
+class MovesList extends React.Component {
+    render() {
+        const moves = this.props.history.map((game, move) => {
+            let text;
+            if (!move) {
+                text = `Start the game`;
+            } else {
+                text = `Go back to move #${move}`;
+            }
+            return (
+                <li key={move}>
+                    <button 
+                    // Action to take back the game to 
+                    // the specified move
+                    onClick={() => this.props.onClick(move)}
+                    >
+                    {text}
+                    </button>
+                </li>
+            );
+        });
+
+        return (<ol>{moves}</ol>);
+    }
+}
+
 class Game extends React.Component {
     constructor(props) {
         super(props);
@@ -120,25 +146,7 @@ class Game extends React.Component {
     render() {
         const history = this.state.history;
         const currentSquares = history[history.length - 1];
-        const moves = history.map((game, move) => {
-            let text;
-            if (!move) {
-                text = `Start the game`;
-            } else {
-                text = `Go back to move #${move}`;
-            }
-            return (
-                <li key={move}>
-                    <button 
-                    // Action to take back the game to 
-                    // the specified move
-                    onClick={() => this.jumpTo(move)}
-                    >
-                    {text}
-                    </button>
-                </li>
-            );
-        });
+        
         return (
             <div className="game">
                 <div className="game-board">
@@ -154,7 +162,10 @@ class Game extends React.Component {
                         xIsNext={this.state.xIsNext} 
                         winner={this.state.winner}
                     ></Status>
-                    <ol>{moves}</ol>
+                    <MovesList
+                        history={this.state.history}
+                        onClick={(move) => this.jumpTo(move)}
+                    ></MovesList>
                 </div>
             </div>
         );
