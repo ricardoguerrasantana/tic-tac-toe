@@ -72,21 +72,22 @@ class Game extends React.Component {
         });
 
         this.handleClick = this.handleClick.bind(this);
+        this.jumpTo = this.jumpTo.bind(this);
     }
 
     handleClick(i) {
         // Make an immutable copy of the last set of games's moves
-        const history = this.state.history;
-        const squares = history[history.length - 1].squares.slice();
+        const history = this.state.history.slice();
+        const currentSquares = history[history.length - 1].squares.slice();
         // Disable the move if there is a winner 
         // or if the square's been marked
-        if (this.state.winner || squares[i]) {
+        if (this.state.winner || currentSquares[i]) {
             return;
         }
         //Assign the porper value for the clicked square
-        squares[i] = this.state.xIsNext ? 'X' : 'O';
+        currentSquares[i] = this.state.xIsNext ? 'X' : 'O';
         //Determine if there is a winner due the last move 
-        const winner = calculateWinner(squares);
+        const winner = calculateWinner(currentSquares);
         this.setState({
             // Add the last set of game's moves to the array 
             // which track game's moves (unlike push() method, 
@@ -95,7 +96,7 @@ class Game extends React.Component {
             history: history.concat(
                 [
                     {
-                        squares: squares
+                        squares: currentSquares
                     }
                 ]
             ),
@@ -104,19 +105,37 @@ class Game extends React.Component {
         });
     }
 
+    jumpTo(move) {
+        // Reset the game to the indicated move
+        const history = this.state.history.slice(0, move + 1);
+        const currentSquares = history[history.length - 1].squares.slice();
+        const winner = calculateWinner(currentSquares);
+        this.setState({
+            history: history, 
+            xIsNext: !(move % 2),
+            winner: winner
+        });
+    }
+
     render() {
         const history = this.state.history;
-        const squares = history[history.length - 1].squares.slice();
-        const moves = history.map((move, step) => {
+        const currentSquares = history[history.length - 1];
+        const moves = history.map((game, move) => {
             let text;
-            if (!step) {
+            if (!move) {
                 text = `Start the game`;
             } else {
-                text = `move #${step}`;
+                text = `Go back to move #${move}`;
             }
             return (
-                <li key={step}>
-                    <button>{text}</button>
+                <li key={move}>
+                    <button 
+                    // Action to take back the game to 
+                    // the specified move
+                    onClick={() => this.jumpTo(move)}
+                    >
+                    {text}
+                    </button>
                 </li>
             );
         });
@@ -124,7 +143,7 @@ class Game extends React.Component {
             <div className="game">
                 <div className="game-board">
                     <Board 
-                        squares={squares} 
+                        squares={currentSquares.squares} 
                         xIsNext={this.state.xIsNext} 
                         winner={this.state.winner} 
                         onClick={(i) => this.handleClick(i)}
