@@ -2,6 +2,17 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 
+function Status(props) {
+    let status;
+    if (props.winner) {
+        status = `Winner: ${props.winner}`;
+    } else {
+        status = `Next player: 
+        ${props.xIsNext ? 'X' : 'O'}`;
+    }
+    return (<div className="status">{status}</div>);
+}
+
 function Square(props) {
     return (
         <button
@@ -24,17 +35,8 @@ class Board extends React.Component {
     }
 
     render() {
-        let status;
-        if (this.props.winner) {
-            status = `Winner: ${this.props.winner}`;
-        } else {
-            status = `Next player: 
-            ${this.props.xIsNext ? 'X' : 'O'}`;
-        }
-
         return (
             <div>
-                <div className="status">{status}</div>
                 <div className="board-row">
                     {this.renderSquare(0)}
                     {this.renderSquare(1)}
@@ -87,7 +89,9 @@ class Game extends React.Component {
         const winner = calculateWinner(squares);
         this.setState({
             // Add the last set of game's moves to the array 
-            // which track game's moves
+            // which track game's moves (unlike push() method, 
+            // concat() method doesn't muatate the 
+            // original array)
             history: history.concat(
                 [
                     {
@@ -114,7 +118,10 @@ class Game extends React.Component {
                     />
                 </div>
                 <div className="game-info">
-                    <div>{/* status */}</div>
+                    <Status
+                        xIsNext={this.state.xIsNext} 
+                        winner={this.state.winner}
+                    ></Status>
                     <ol>{/* TODO */}</ol>
                 </div>
             </div>
