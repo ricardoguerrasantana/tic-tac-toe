@@ -15,6 +15,7 @@ class Game extends React.Component {
             history: [
                 {
                     squares: Array(9).fill(null),
+                    sequence: [],
                     locations: Array(9).fill(Array(2).fill(null))
                 }
             ],
@@ -38,6 +39,8 @@ class Game extends React.Component {
         }
         //Assign the porper value for the clicked square
         currentSquares[i] = this.state.xIsNext ? 'X' : 'O';
+        const currentSequence = 
+        history[history.length - 1].sequence.slice();
         const currentLocations = 
         history[history.length - 1].locations.slice();
         currentLocations[i] = [col , row];
@@ -52,6 +55,7 @@ class Game extends React.Component {
                 [
                     {
                         squares: currentSquares,
+                        sequence: currentSequence.concat([i]),
                         locations: currentLocations
                     }
                 ]

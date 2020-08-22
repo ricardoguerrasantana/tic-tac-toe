@@ -1,21 +1,20 @@
 import React from 'react';
 
 export const MoveHistoryList = (props) => {
-    let lastMoveSquares = Array(9).fill(null);
     const moves = props.history.map((move, step) => {
         let textButton;
         let textLocation;
         if (!step) {
             textButton = `Start the game`;
         } else {
-            // Find the index for the last square marked
-            const currentMoveSquares = move.squares.slice();
-            const i = move.squares.findIndex((square, index) => {
-                return square !== lastMoveSquares[index];
-            });
-            lastMoveSquares = currentMoveSquares;
+            // Get last marked position 
+            const sequence = move.sequence.slice();
+            const i = sequence[sequence.length - 1];
+            // Show location or last marked position
             textLocation = `${move.squares[i]} marks location 
-            (${move.locations[i][0]} , ${move.locations[i][1]})`;
+            (C:${move.locations[i][0]} , 
+            R:${move.locations[i][1]})`;
+            // Text of the last step's button
             textButton = `Go back to move #${step}`;
         }
         return (
@@ -28,6 +27,7 @@ export const MoveHistoryList = (props) => {
                 >
                 {textButton}
                 </button>
+                <hr></hr>
             </li>
         );
     });
