@@ -4,7 +4,7 @@ import { calculateWinner } from '../../util/helpers';
 
 import Board from '../Board/Board';
 
-import { MovesList } from '../MovesLists/MovesLists';
+import { MoveHistoryList } from '../MovesLists/MovesLists';
 import { Status } from '../Status/Status';
 
 class Game extends React.Component {
@@ -14,7 +14,8 @@ class Game extends React.Component {
         this.state = ({
             history: [
                 {
-                    squares: Array(9).fill(null)
+                    squares: Array(9).fill(null),
+                    locations: Array(9).fill(Array(2).fill(null))
                 }
             ],
             xIsNext: true,
@@ -25,10 +26,11 @@ class Game extends React.Component {
         this.jumpTo = this.jumpTo.bind(this);
     }
 
-    handleClick(i) {
+    handleClick(i , col , row) {
         // Make an immutable copy of the last set of games's moves
         const history = this.state.history.slice();
-        const currentSquares = history[history.length - 1].squares.slice();
+        const currentSquares = 
+        history[history.length - 1].squares.slice();
         // Disable the move if there is a winner 
         // or if the square's been marked
         if (this.state.winner || currentSquares[i]) {
@@ -36,6 +38,9 @@ class Game extends React.Component {
         }
         //Assign the porper value for the clicked square
         currentSquares[i] = this.state.xIsNext ? 'X' : 'O';
+        const currentLocations = 
+        history[history.length - 1].locations.slice();
+        currentLocations[i] = [col , row];
         //Determine if there is a winner due the last move 
         const winner = calculateWinner(currentSquares);
         this.setState({
@@ -46,7 +51,8 @@ class Game extends React.Component {
             history: history.concat(
                 [
                     {
-                        squares: currentSquares
+                        squares: currentSquares,
+                        locations: currentLocations
                     }
                 ]
             ),
@@ -55,35 +61,39 @@ class Game extends React.Component {
         });
     }
 
-    jumpTo(move) {
-        // Reset the game to the indicated move
-        const history = this.state.history.slice(0, move + 1);
-        const currentSquares = history[history.length - 1].squares.slice();
+    jumpTo(step) {
+        // Reset the game to the indicated step
+        const history = this.state.history.slice(0, step + 1);
+        const currentSquares = 
+        history[history.length - 1].squares.slice();
         const winner = calculateWinner(currentSquares);
         this.setState({
             history: history, 
-            // !(move % 2) this is: because X starts the 
-            // first move (0) it is even, then module of 
+            // !(step % 2) this is: because X starts 
+            // first (step 0) it is even, then module of 
             // a even number is 0, evaluated as false which 
             // is turned to the opposite by 
             // the Logical NOT operator (!) 
-            xIsNext: !(move % 2), 
+            xIsNext: !(step % 2), 
             winner: winner
         });
     }
 
     render() {
         const history = this.state.history;
-        const currentSquares = history[history.length - 1];
+        const currentSquares = 
+        history[history.length - 1].squares.slice();
         
         return (
             <div className="game">
                 <div className="game-board">
                     <Board 
-                        squares={currentSquares.squares} 
+                        squares={currentSquares}
                         xIsNext={this.state.xIsNext} 
                         winner={this.state.winner} 
-                        onClick={(i) => this.handleClick(i)}
+                        onClick={(i, col, row) => {
+                            return this.handleClick(i, col, row);
+                        }}
                     />
                 </div>
                 <div className="game-info">
@@ -91,10 +101,10 @@ class Game extends React.Component {
                         xIsNext={this.state.xIsNext} 
                         winner={this.state.winner}
                     ></Status>
-                    <MovesList
+                    <MoveHistoryList
                         history={this.state.history}
-                        onClick={(move) => this.jumpTo(move)}
-                    ></MovesList>
+                        onClick={(step) => this.jumpTo(step)}
+                    ></MoveHistoryList>
                 </div>
             </div>
         );
