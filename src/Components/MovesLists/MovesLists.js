@@ -18,7 +18,9 @@ export const MoveHistoryList = (props) => {
             textButton = `Go back to move #${step}`;
         }
         return (
-            <li key={step}>
+            <li key={step}
+                className={"item"}
+            >
                 <p>{textLocation}</p>
                 <button 
                 // Action to take back the game to 
