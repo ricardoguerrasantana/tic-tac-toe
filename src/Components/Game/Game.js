@@ -15,12 +15,22 @@ class Game extends React.Component {
             history: [
                 {
                     squares: Array(9).fill(null),
-                    sequence: [],
-                    locations: Array(9).fill(Array(2).fill(null))
                 }
             ],
             xIsNext: true,
-            winner: null
+            winner: null,
+            sequence: [],
+            locations: [
+                {col: 1, row: 1},
+                {col: 2, row: 1},
+                {col: 3, row: 1},
+                {col: 1, row: 2},
+                {col: 2, row: 2},
+                {col: 3, row: 2},
+                {col: 1, row: 3},
+                {col: 2, row: 3},
+                {col: 3, row: 3},
+            ]
         });
 
         this.handleClick = this.handleClick.bind(this);
@@ -39,11 +49,10 @@ class Game extends React.Component {
         }
         //Assign the porper value for the clicked square
         currentSquares[i] = this.state.xIsNext ? 'X' : 'O';
-        const currentSequence = 
-        history[history.length - 1].sequence.slice();
-        const currentLocations = 
-        history[history.length - 1].locations.slice();
-        currentLocations[i] = [col , row];
+        // Make an immutable copy of the sequence of 
+        // the marked positions
+        const sequence = 
+        this.state.sequence.slice();
         //Determine if there is a winner due the last move 
         const winner = calculateWinner(currentSquares);
         this.setState({
@@ -55,31 +64,33 @@ class Game extends React.Component {
                 [
                     {
                         squares: currentSquares,
-                        sequence: currentSequence.concat([i]),
-                        locations: currentLocations
                     }
                 ]
-            ),
+                ),
             xIsNext: !this.state.xIsNext,
-            winner: winner
+            winner: winner,
+            sequence: sequence.concat([i]),
         });
     }
 
     jumpTo(step) {
         // Reset the game to the indicated step
-        const history = this.state.history.slice(0, step + 1);
+        const currentHistory = 
+        this.state.history.slice(0, step + 1);
         const currentSquares = 
-        history[history.length - 1].squares.slice();
+        currentHistory[currentHistory.length - 1].squares.slice();
         const winner = calculateWinner(currentSquares);
+        const currentSequence = this.state.sequence.slice(0, step);
         this.setState({
-            history: history, 
+            history: currentHistory, 
             // !(step % 2) this is: because X starts 
             // first (step 0) it is even, then module of 
             // a even number is 0, evaluated as false which 
             // is turned to the opposite by 
             // the Logical NOT operator (!) 
             xIsNext: !(step % 2), 
-            winner: winner
+            winner: winner,
+            sequence: currentSequence
         });
     }
 
@@ -95,8 +106,8 @@ class Game extends React.Component {
                         squares={currentSquares}
                         xIsNext={this.state.xIsNext} 
                         winner={this.state.winner} 
-                        onClick={(i, col, row) => {
-                            return this.handleClick(i, col, row);
+                        onClick={(i) => {
+                            return this.handleClick(i);
                         }}
                     />
                 </div>
@@ -107,6 +118,8 @@ class Game extends React.Component {
                     ></Status>
                     <MoveHistoryList
                         history={this.state.history}
+                        sequence={this.state.sequence}
+                        locations={this.state.locations}
                         onClick={(step) => this.jumpTo(step)}
                     ></MoveHistoryList>
                 </div>

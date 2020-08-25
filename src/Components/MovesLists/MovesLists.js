@@ -7,13 +7,13 @@ export const MoveHistoryList = (props) => {
         if (!step) {
             textButton = `Start the game`;
         } else {
-            // Get last marked position 
-            const sequence = move.sequence.slice();
-            const i = sequence[sequence.length - 1];
-            // Show location or last marked position
+            // Get last marked position (i)
+            const sequence = props.sequence.slice();
+            const i = sequence[step - 1];
+            // Show the location of the last marked position
             textLocation = `${move.squares[i]} marks location 
-            (C:${move.locations[i][0]} , 
-            R:${move.locations[i][1]})`;
+            (C:${props.locations[i].col} , 
+            R:${props.locations[i].row})`;
             // Text of the last step's button
             textButton = `Go back to move #${step}`;
         }
