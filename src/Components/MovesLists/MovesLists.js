@@ -34,5 +34,7 @@ export const MoveHistoryList = (props) => {
         );
     });
 
-    return (<ol>{moves}</ol>);
+    return (<ol>{
+        props.ascendingOrder ? moves : moves.slice().reverse()
+    }</ol>);
 }

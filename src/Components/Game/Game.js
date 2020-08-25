@@ -30,7 +30,8 @@ class Game extends React.Component {
                 {col: 1, row: 3},
                 {col: 2, row: 3},
                 {col: 3, row: 3},
-            ]
+            ],
+            ascendingOrder: true,
         });
 
         this.handleClick = this.handleClick.bind(this);
@@ -94,6 +95,12 @@ class Game extends React.Component {
         });
     }
 
+    toggleOrder() {
+        this.setState({
+            ascendingOrder: this.state.ascendingOrder ? false : true
+        });
+    }
+
     render() {
         const history = this.state.history;
         const currentSquares = 
@@ -116,10 +123,16 @@ class Game extends React.Component {
                         xIsNext={this.state.xIsNext} 
                         winner={this.state.winner}
                     ></Status>
+                    <button
+                        onClick={() => this.toggleOrder()}
+                    >
+                        Toggle the List Order
+                    </button>
                     <MoveHistoryList
                         history={this.state.history}
                         sequence={this.state.sequence}
                         locations={this.state.locations}
+                        ascendingOrder={this.state.ascendingOrder}
                         onClick={(step) => this.jumpTo(step)}
                     ></MoveHistoryList>
                 </div>
