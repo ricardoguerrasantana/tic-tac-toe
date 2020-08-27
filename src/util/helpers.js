@@ -22,6 +22,11 @@ export function calculateWinner(squares) {
         if (squares[a] && squares[a] === squares[b] && squares[b] === squares[c]) {
             const winner = squares[a];
             return winner;
+        } else {
+            const full = (square) => square !== null;
+            if (squares.every(full)) {
+                return false;
+            }
         }
     }
     // If the loop doesn't return a winner the function is 
