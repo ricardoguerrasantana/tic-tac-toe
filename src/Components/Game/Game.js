@@ -1,6 +1,7 @@
 import React from 'react';
 
 import { calculateWinner } from '../../util/helpers';
+import { styleWinnerLine } from '../../util/helpers';
 
 import Board from '../Board/Board';
 
@@ -32,13 +33,14 @@ class Game extends React.Component {
                 {col: 3, row: 3},
             ],
             ascendingOrder: true,
+            styles: Array(9).fill("square"),
         });
 
         this.handleClick = this.handleClick.bind(this);
         this.jumpTo = this.jumpTo.bind(this);
     }
 
-    handleClick(i , col , row) {
+    handleClick(i) {
         // Make an immutable copy of the last set of games's moves
         const history = this.state.history.slice();
         const currentSquares = 
@@ -56,6 +58,10 @@ class Game extends React.Component {
         this.state.sequence.slice();
         //Determine if there is a winner due the last move 
         const winner = calculateWinner(currentSquares);
+        let styles = this.state.styles;
+        if (winner) {
+            styles = styleWinnerLine(currentSquares, styles, "square", "highlighted-square");
+        }
         this.setState({
             // Add the last set of game's moves to the array 
             // which track game's moves (unlike push() method, 
@@ -71,6 +77,7 @@ class Game extends React.Component {
             xIsNext: !this.state.xIsNext,
             winner: winner,
             sequence: sequence.concat([i]),
+            styles: styles,
         });
     }
 
@@ -82,6 +89,8 @@ class Game extends React.Component {
         currentHistory[currentHistory.length - 1].squares.slice();
         const winner = calculateWinner(currentSquares);
         const currentSequence = this.state.sequence.slice(0, step);
+        let styles = this.state.styles;
+        styles = styleWinnerLine(currentSquares, styles, "square", "highlighted-square");
         this.setState({
             history: currentHistory, 
             // !(step % 2) this is: because X starts 
@@ -91,7 +100,8 @@ class Game extends React.Component {
             // the Logical NOT operator (!) 
             xIsNext: !(step % 2), 
             winner: winner,
-            sequence: currentSequence
+            sequence: currentSequence,
+            styles: styles,
         });
     }
 
@@ -113,6 +123,7 @@ class Game extends React.Component {
                         squares={currentSquares}
                         xIsNext={this.state.xIsNext} 
                         winner={this.state.winner} 
+                        styles={this.state.styles} 
                         onClick={(i) => {
                             return this.handleClick(i);
                         }}
