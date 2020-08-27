@@ -25,7 +25,7 @@ export const MoveHistoryList = (props) => {
                 <button 
                 // Action to take back the game to 
                 // the specified move
-                onClick={() => props.onClick(step)}
+                onClick={() => props.jumpTo(step)}
                 >
                 {textButton}
                 </button>

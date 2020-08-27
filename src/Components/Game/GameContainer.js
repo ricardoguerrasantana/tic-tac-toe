@@ -1,14 +1,11 @@
 import React from 'react';
-
+// Helper Functions
 import { calculateWinner } from '../../util/helpers';
 import { styleWinnerLine } from '../../util/helpers';
+// Pesentational Component
+import { GameRendering } from './GameRendering';
 
-import Board from '../Board/Board';
-
-import { MoveHistoryList } from '../MovesLists/MovesLists';
-import { Status } from '../Status/Status';
-
-class Game extends React.Component {
+class GameContainer extends React.Component {
     constructor(props) {
         super(props);
 
@@ -36,11 +33,12 @@ class Game extends React.Component {
             styles: Array(9).fill("square"),
         });
 
-        this.handleClick = this.handleClick.bind(this);
+        this.handleClickSquare = this.handleClickSquare.bind(this);
         this.jumpTo = this.jumpTo.bind(this);
+        this.toggleOrder = this.toggleOrder.bind(this);
     }
 
-    handleClick(i) {
+    handleClickSquare(i) {
         // Make an immutable copy of the last set of games's moves
         const history = this.state.history.slice();
         const currentSquares = 
@@ -58,6 +56,7 @@ class Game extends React.Component {
         this.state.sequence.slice();
         //Determine if there is a winner due the last move 
         const winner = calculateWinner(currentSquares);
+        console.log(winner);
         let styles = this.state.styles;
         if (winner) {
             styles = styleWinnerLine(currentSquares, styles, "square", "highlighted-square");
@@ -112,44 +111,21 @@ class Game extends React.Component {
     }
 
     render() {
-        const history = this.state.history;
-        const currentSquares = 
-        history[history.length - 1].squares.slice();
-        
         return (
-            <div className="game">
-                <div className="game-board">
-                    <Board 
-                        squares={currentSquares}
-                        xIsNext={this.state.xIsNext} 
-                        winner={this.state.winner} 
-                        styles={this.state.styles} 
-                        onClick={(i) => {
-                            return this.handleClick(i);
-                        }}
-                    />
-                </div>
-                <div className="game-info">
-                    <Status
-                        xIsNext={this.state.xIsNext} 
-                        winner={this.state.winner}
-                    ></Status>
-                    <button
-                        onClick={() => this.toggleOrder()}
-                    >
-                        Toggle the List Order
-                    </button>
-                    <MoveHistoryList
-                        history={this.state.history}
-                        sequence={this.state.sequence}
-                        locations={this.state.locations}
-                        ascendingOrder={this.state.ascendingOrder}
-                        onClick={(step) => this.jumpTo(step)}
-                    ></MoveHistoryList>
-                </div>
-            </div>
+            <GameRendering 
+                history={this.state.history}
+                xIsNext={this.state.xIsNext} 
+                winner={this.state.winner}
+                sequence={this.state.sequence} 
+                locations={this.state.locations} 
+                ascendingOrder={this.state.ascendingOrder}
+                styles={this.state.styles}
+                handleClickSquare={(i) => this.handleClickSquare(i)}
+                jumpTo={(step) => this.jumpTo(step)}
+                toggleOrder={() => this.toggleOrder()}
+            ></GameRendering>
         );
     }
 }
 
-export default Game;
+export default GameContainer;
