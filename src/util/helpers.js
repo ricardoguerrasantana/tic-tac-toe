@@ -16,30 +16,55 @@ export function calculateWinner(squares) {
     lines = lines.map(line => {
         return line.map(i => --i);
     });
-    // Loops to check for a winner
+    /**
+     * Algorithm to search for a winner
+     * 1. Initialize the winner's result object to the no 
+     * winner state. If there is not winner or draw yet, 
+     * the function is going to return this default 
+     * initialization.
+     */
+    let winnersResult = {
+        winner: null,
+        squares: [],
+    };
+    /**
+     * 2. Check if every square got already a mark. if so, 
+     * set the winner's result object to the draw state.
+     */
+    if (squares.every((square) => square !== null)) {
+        winnersResult = {
+            winner: false, 
+            squares: [],
+        };
+    } 
+    /**
+     * 3. loop up for a winner. Then if it finds a winner 
+     * sets the winner's result object with a winner and 
+     * every square which is on a winner's line or lines.
+     */
     for (let i = 0; i < lines.length; i++) {
         const [a, b, c] = lines[i];
-        console.log(a);
-        console.log(squares[a]);
-        console.log(b);
-        console.log(squares[b]);
-        console.log(c);
-        console.log(squares[c]);
-        if (squares[a] && squares[a] === squares[b] && squares[b] === squares[c]) {
-            console.log(squares[a]);
-            console.log(squares[a] === squares[b]);
-            console.log(squares[b] === squares[c]);
-            return squares[a];
+        if (squares[a] && 
+            squares[a] === squares[b] && 
+            squares[b] === squares[c]) {
+            const isNotInclued = (num) => {
+                return !winnersResult.squares.includes(num);
+            }
+            const highlightSquares = 
+            winnersResult.squares.slice().concat(
+                [a , b , c].filter(isNotInclued)
+            );
+            winnersResult = {
+                winner: squares[a],
+                squares: highlightSquares,
+            };
         }
     }
-    // If the loop doesn't return a winner the function is 
-    // returned as null
-    if (squares.every((square) => square !== null)) {
-        console.log('draw');
-        return false;
-    } else {
-        return null;
-    }
+    /**
+     * 4. Return the winner's result object with the proper
+     * value in each case.
+     */
+    return winnersResult;
 }
 
 export function styleWinnerLine(squares, styles, defaultStyle, highlightStyle) {

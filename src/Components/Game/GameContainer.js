@@ -55,10 +55,10 @@ class GameContainer extends React.Component {
         const sequence = 
         this.state.sequence.slice();
         //Determine if there is a winner due the last move 
-        const winner = calculateWinner(currentSquares);
-        console.log(winner);
+        const winnersResult = calculateWinner(currentSquares);
+        console.log(winnersResult.squares);
         let styles = this.state.styles;
-        if (winner) {
+        if (winnersResult.winner) {
             styles = styleWinnerLine(currentSquares, styles, "square", "highlighted-square");
         }
         this.setState({
@@ -74,7 +74,7 @@ class GameContainer extends React.Component {
                 ]
                 ),
             xIsNext: !this.state.xIsNext,
-            winner: winner,
+            winner: winnersResult.winner,
             sequence: sequence.concat([i]),
             styles: styles,
         });
@@ -86,7 +86,7 @@ class GameContainer extends React.Component {
         this.state.history.slice(0, step + 1);
         const currentSquares = 
         currentHistory[currentHistory.length - 1].squares.slice();
-        const winner = calculateWinner(currentSquares);
+        const winnersResult = calculateWinner(currentSquares);
         const currentSequence = this.state.sequence.slice(0, step);
         let styles = this.state.styles;
         styles = styleWinnerLine(currentSquares, styles, "square", "highlighted-square");
@@ -98,7 +98,7 @@ class GameContainer extends React.Component {
             // is turned to the opposite by 
             // the Logical NOT operator (!) 
             xIsNext: !(step % 2), 
-            winner: winner,
+            winner: winnersResult.winner,
             sequence: currentSequence,
             styles: styles,
         });
