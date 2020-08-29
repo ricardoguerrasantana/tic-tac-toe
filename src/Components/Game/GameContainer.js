@@ -56,10 +56,11 @@ class GameContainer extends React.Component {
         this.state.sequence.slice();
         //Determine if there is a winner due the last move 
         const winnersResult = calculateWinner(currentSquares);
-        console.log(winnersResult.squares);
         let styles = this.state.styles;
         if (winnersResult.winner) {
-            styles = styleWinnerLine(currentSquares, styles, "square", "highlighted-square");
+            styles = styleWinnerLine(styles, 
+                winnersResult.squares, "square", 
+                "highlighted-square");
         }
         this.setState({
             // Add the last set of game's moves to the array 
