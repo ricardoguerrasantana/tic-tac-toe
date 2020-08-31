@@ -2,7 +2,7 @@ import React from 'react';
 // Components
 import Board from '../Board/Board';
 import { Status } from '../Status/Status';
-import { MoveHistoryList } from '../MovesLists/MovesLists';
+import { MoveHistoryList } from '../MoveList/MoveList';
 import { GameOver } from '../GameOver/GameOver';
 import { ResetGame } from '../ResetGame/ResetGame';
 
@@ -43,18 +43,13 @@ export const GameRendering = (props) => {
                         xIsNext={props.xIsNext} 
                         winner={props.winner}
                     ></Status>
-                    <button
-                        className="toggle" 
-                        onClick={() => props.toggleOrder()}
-                    >
-                        Toggle the List Order
-                    </button>
                     <MoveHistoryList
                         history={props.history}
                         sequence={props.sequence}
                         locations={props.locations}
                         ascendingOrder={props.ascendingOrder}
                         jumpTo={(step) => props.jumpTo(step)}
+                        toggleOrder={() => props.toggleOrder()}
                     ></MoveHistoryList>
                 </div>
             </div>
