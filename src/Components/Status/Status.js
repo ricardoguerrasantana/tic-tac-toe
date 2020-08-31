@@ -3,7 +3,7 @@ import React from 'react';
 export const Status = (props) => {
     let status;
     if (props.winner) {
-        status = `Winner: ${props.winner}`;
+        status = `** Habemus Winner **`;
     } else if (props.winner === false){
         status = `Draw`;
     } else {

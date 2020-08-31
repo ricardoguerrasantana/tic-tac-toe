@@ -3,11 +3,25 @@ import React from 'react';
 import Board from '../Board/Board';
 import { Status } from '../Status/Status';
 import { MoveHistoryList } from '../MovesLists/MovesLists';
+import { GameOver } from '../GameOver/GameOver';
+import { ResetGame } from '../ResetGame/ResetGame';
 
 export const GameRendering = (props) => {
     const history = props.history;
     const currentSquares = 
     history[history.length - 1].squares.slice();
+    const gameOver = (
+        <GameOver
+            winner={props.winner}
+            resetGame={() => props.resetGame()}
+        ></GameOver>
+    );
+    const resetGame = (
+        <ResetGame
+            text="Reset Game" 
+            resetGame={() => props.resetGame()}
+        ></ResetGame>
+    );
     
     return (
         <div className="game">
@@ -21,6 +35,8 @@ export const GameRendering = (props) => {
                             return props.handleClickSquare(i);
                         }}
                     />
+                    {(props.winner || props.winner === false) ?
+                     gameOver : resetGame} 
                 </div>
                 <div className="game-info">
                     <Status
@@ -28,6 +44,7 @@ export const GameRendering = (props) => {
                         winner={props.winner}
                     ></Status>
                     <button
+                        className="toggle" 
                         onClick={() => props.toggleOrder()}
                     >
                         Toggle the List Order
