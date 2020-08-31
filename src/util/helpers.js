@@ -79,7 +79,7 @@ export function styleWinnerLine(styles, highlightSquares, defaultStyle, highligh
      */
     for (let i = 0; i < styles.length; i++) {
         if (highlightSquares.includes(i)) {
-            newStyles[i] = highlightStyle;
+            newStyles[i] = `${newStyles[i]} ${highlightStyle}`;
         }        
     }
     return newStyles;
