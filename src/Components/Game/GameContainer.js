@@ -9,7 +9,16 @@ class GameContainer extends React.Component {
     constructor(props) {
         super(props);
 
-        this.state = ({
+        this.state = this.initialize();
+
+        this.handleClickSquare = this.handleClickSquare.bind(this);
+        this.jumpTo = this.jumpTo.bind(this);
+        this.toggleOrder = this.toggleOrder.bind(this);
+        this.resetGame = this.resetGame.bind(this);
+    }
+
+    initialize() {
+        return {
             history: [
                 {
                     squares: Array(9).fill(null),
@@ -31,13 +40,8 @@ class GameContainer extends React.Component {
             ],
             ascendingOrder: true,
             styles: Array(9).fill("square"),
-        });
-
-        this.handleClickSquare = this.handleClickSquare.bind(this);
-        this.jumpTo = this.jumpTo.bind(this);
-        this.toggleOrder = this.toggleOrder.bind(this);
-        this.resetGame = this.resetGame.bind(this);
-    }
+        }
+    };
 
     handleClickSquare(i) {
         // Make an immutable copy of the last set of games's moves
@@ -113,29 +117,7 @@ class GameContainer extends React.Component {
     }
 
     resetGame() {
-        this.setState({
-            history: [
-                {
-                    squares: Array(9).fill(null),
-                }
-            ],
-            xIsNext: true,
-            winner: null,
-            sequence: [],
-            locations: [
-                {col: 1, row: 1},
-                {col: 2, row: 1},
-                {col: 3, row: 1},
-                {col: 1, row: 2},
-                {col: 2, row: 2},
-                {col: 3, row: 2},
-                {col: 1, row: 3},
-                {col: 2, row: 3},
-                {col: 3, row: 3},
-            ],
-            ascendingOrder: true,
-            styles: Array(9).fill("square"),
-        });
+        this.setState(this.initialize());
     }
 
     render() {
