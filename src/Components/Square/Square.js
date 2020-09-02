@@ -3,7 +3,7 @@ import React from 'react';
 export const Square = (props) => {
     return (
         <button
-            className={props.style}
+            className={props.squareStyle}
             onClick={props.handleClickSquare}
         >
             {props.value}

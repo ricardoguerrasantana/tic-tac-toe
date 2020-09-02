@@ -69,18 +69,17 @@ export function calculateWinner(squares) {
     return winnersResult;
 }
 
-export function styleWinnerLine(styles, highlightSquares, defaultStyle, highlightStyle) {
+export function highlightWinnerSquares(squaresStyle, highlightSquares, defaultStyle, highlightStyle) {
     /**
-     * Initialize a default styles array
+     * Store highlighting style in the styles array for every 
+     * winner square and normal styles for the others.
      */
-    const newStyles = Array(styles.length).fill(defaultStyle);
-    /**
-     * Modify the style of every square to highlight
-     */
-    for (let i = 0; i < styles.length; i++) {
-        if (highlightSquares.includes(i)) {
-            newStyles[i] = `${newStyles[i]} ${highlightStyle}`;
-        }        
-    }
-    return newStyles;
+    const newSquaresStyle = squaresStyle.map((style, index) => {
+        if (highlightSquares.includes(index)) {
+            return `${defaultStyle} ${highlightStyle}`;
+        }
+        return `${defaultStyle}`;
+    });
+    
+    return newSquaresStyle;
 }

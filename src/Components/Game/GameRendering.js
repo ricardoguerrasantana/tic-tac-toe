@@ -2,12 +2,12 @@ import React from 'react';
 // Components
 import Board from '../Board/Board';
 import { Status } from '../Status/Status';
-import { MoveHistoryList } from '../MoveList/MoveList';
+import { MoveHistoryList } from '../MoveHistoryList/MoveHistoryList';
 import { GameOver } from '../GameOver/GameOver';
 import { ResetGame } from '../ResetGame/ResetGame';
 
 export const GameRendering = (props) => {
-    const history = props.history;
+    const history = props.history.slice(0, props.moveNum + 1);
     const currentSquares = 
     history[history.length - 1].squares.slice();
     const gameOver = (
@@ -30,7 +30,7 @@ export const GameRendering = (props) => {
                         squares={currentSquares}
                         xIsNext={props.xIsNext} 
                         winner={props.winner} 
-                        styles={props.styles} 
+                        squaresStyle={props.squaresStyle} 
                         handleClickSquare={(i) => {
                             return props.handleClickSquare(i);
                         }}
@@ -48,7 +48,8 @@ export const GameRendering = (props) => {
                         sequence={props.sequence}
                         locations={props.locations}
                         ascendingOrder={props.ascendingOrder}
-                        jumpTo={(step) => props.jumpTo(step)}
+                        moveStyle={props.moveStyle}
+                        jumpTo={(moveNum) => props.jumpTo(moveNum)}
                         toggleOrder={() => props.toggleOrder()}
                     ></MoveHistoryList>
                 </div>

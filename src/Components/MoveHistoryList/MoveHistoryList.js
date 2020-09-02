@@ -1,22 +1,26 @@
 import React from 'react';
 
 export const MoveHistoryList = (props) => {
-    const moves = props.history.map((move, step) => {
+    const moves = props.history.map((move, moveNum) => {
         // Get last marked position (i)
         const sequence = props.sequence.slice();
-        const i = sequence[step - 1];
-        const text = (!step ? <span>Game Start</span> : 
-            <span>move #{step} - <b>{move.squares[i]}</b> (
+        const i = sequence[moveNum];
+        console.log(moveNum, i , sequence, move); 
+        const text = (!moveNum ? <span>Game Start</span> : 
+            <span>move #{moveNum} - <b>{move.squares[i]}</b> (
             {props.locations[i].col} , 
             {props.locations[i].row})</span>);
         return (
-            <li key={step}
-                className="item"
+            <li key={moveNum}
+                className={props.moveStyle[moveNum]}
             >
                 <button 
-                // Action to take back the game to 
-                // the specified move
-                onClick={() => props.jumpTo(step)}
+                    className={props.moveStyle[moveNum]}
+                    /**
+                    Action to take back the game to the 
+                    specified move 
+                    */
+                    onClick={() => props.jumpTo(moveNum)}
                 >
                 {text}
                 </button>

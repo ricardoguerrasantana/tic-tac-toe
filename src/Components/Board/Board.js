@@ -8,8 +8,9 @@ class Board extends React.Component {
             <Square
                 key={i} 
                 value={this.props.squares[i]}
-                style={this.props.styles[i]}
-                handleClickSquare={() => this.props.handleClickSquare(i)}
+                squareStyle={this.props.squaresStyle[i]}
+                handleClickSquare={() => 
+                    this.props.handleClickSquare(i)}
             />
         );
     }
@@ -27,7 +28,7 @@ class Board extends React.Component {
                     key={`col${(i + 3) / 2}`}
                     className="board-row"
                 >
-                {rowOfSquares}
+                    {rowOfSquares}
                 </div>
             );
         }

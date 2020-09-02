@@ -56,10 +56,6 @@ p {
   margin-left: 20px;
 }
 
-.item:hover {
-  font-weight: bold;
-}
-
 .highlighted-square {
   background: turquoise;
 }
@@ -84,4 +80,16 @@ img {
 
 .move-list {
   text-align: center;
+}
+
+.normal {
+  font-weight: normal;
+}
+
+.bold {
+  font-weight: bold;
+}
+
+.bolder {
+  font-weight: 900;
 }
