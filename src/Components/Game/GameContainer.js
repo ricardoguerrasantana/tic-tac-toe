@@ -70,8 +70,7 @@ class GameContainer extends React.Component {
             winnersResult.squares, "square", 
             "highlighted-square");
         const moveStyle = 
-        this.state.moveStyle.slice(0 , this.state.moveNum + 1).
-        map(() => "normal");
+        this.state.moveStyle.slice(0 , this.state.moveNum + 1).map(() => "normal");
         console.log(moveStyle);
         this.setState({
             // Add the last set of game's moves to the array 
