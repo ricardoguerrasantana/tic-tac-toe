@@ -5,6 +5,7 @@ import { Status } from '../Status/Status';
 import { MoveHistoryList } from '../MoveHistoryList/MoveHistoryList';
 import { GameOver } from '../GameOver/GameOver';
 import { ResetGame } from '../ResetGame/ResetGame';
+import { PlayerName } from '../PlayerName/PlayerName';
 
 export const GameRendering = (props) => {
     const history = props.history.slice(0, props.moveNum + 1);
@@ -39,6 +40,20 @@ export const GameRendering = (props) => {
                      gameOver : resetGame} 
                 </div>
                 <div className="game-info">
+                    <PlayerName
+                        playerMark={"X"}
+                        player={props.player}
+                        changePlayerName={(e, playerMark) => {
+                            return props.changePlayerName(e, playerMark);
+                        }}
+                    ></PlayerName>
+                    <PlayerName
+                        playerMark={"O"}
+                        player={props.player}
+                        changePlayerName={(e, playerMark) => {
+                            return props.changePlayerName(e, playerMark);
+                        }}
+                    ></PlayerName>
                     <Status
                         xIsNext={props.xIsNext} 
                         winner={props.winner}

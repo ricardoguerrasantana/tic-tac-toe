@@ -5,7 +5,6 @@ export const MoveHistoryList = (props) => {
         // Get last marked position (i)
         const sequence = props.sequence.slice();
         const i = sequence[moveNum];
-        console.log(moveNum, i , sequence, move); 
         const text = (!moveNum ? <span>Game Start</span> : 
             <span>move #{moveNum} - <b>{move.squares[i]}</b> (
             {props.locations[i].col} , 

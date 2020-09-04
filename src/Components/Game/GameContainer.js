@@ -15,6 +15,7 @@ class GameContainer extends React.Component {
         this.jumpTo = this.jumpTo.bind(this);
         this.toggleOrder = this.toggleOrder.bind(this);
         this.resetGame = this.resetGame.bind(this);
+        this.changePlayerName = this.changePlayerName.bind(this);
     }
 
     initialize() {
@@ -41,7 +42,11 @@ class GameContainer extends React.Component {
             ],
             ascendingOrder: true,
             squaresStyle: Array(9).fill("square"), 
-            moveStyle: ["bold"],
+            moveStyle: ["bold"], 
+            player: {
+                "X": "X", 
+                "O": "O",
+            },
         }
     };
 
@@ -62,16 +67,15 @@ class GameContainer extends React.Component {
         // the marked positions
         const sequence = 
         this.state.sequence.slice(0 , this.state.moveNum + 1);
-        console.log(sequence);
         //Determine if there is a winner due the last move 
-        const winnersResult = calculateWinner(currentSquares);
+        const winnersResult = 
+            calculateWinner(currentSquares, this.state.player);
         const squaresStyle = 
             highlightWinnerSquares(this.state.squaresStyle, 
             winnersResult.squares, "square", 
             "highlighted-square");
         const moveStyle = 
         this.state.moveStyle.slice(0 , this.state.moveNum + 1).map(() => "normal");
-        console.log(moveStyle);
         this.setState({
             // Add the last set of game's moves to the array 
             // which track game's moves (unlike push() method, 
@@ -106,7 +110,8 @@ class GameContainer extends React.Component {
          */
         const currentSquares = 
         history[history.length - 1].squares.slice();
-        const winnersResult = calculateWinner(currentSquares);
+        const winnersResult = 
+            calculateWinner(currentSquares, this.state.player);
         const squaresStyle = 
             highlightWinnerSquares(this.state.squaresStyle, 
             winnersResult.squares, "square", 
@@ -144,6 +149,20 @@ class GameContainer extends React.Component {
         this.setState(this.initialize());
     }
 
+    changePlayerName(e, playerMark) {
+        let { target: {value} } = e;
+        if (!value) {
+            value = playerMark;
+        }
+        this.setState({
+            player: Object.assign(
+                {},
+                this.state.player,
+                { [playerMark]: value }
+            )
+        });
+    }
+
     render() {
         return (
             <GameRendering 
@@ -156,11 +175,14 @@ class GameContainer extends React.Component {
                 ascendingOrder={this.state.ascendingOrder}
                 squaresStyle={this.state.squaresStyle}
                 moveStyle={this.state.moveStyle}
+                player={this.state.player}
                 handleClickSquare={(i) => 
                     this.handleClickSquare(i)}
                 jumpTo={(moveNum) => this.jumpTo(moveNum)}
                 toggleOrder={() => this.toggleOrder()}
                 resetGame={() => this.resetGame()}
+                changePlayerName={(e, playerMark) => 
+                    this.changePlayerName(e, playerMark)}
             ></GameRendering>
         );
     }
