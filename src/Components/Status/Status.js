@@ -2,9 +2,9 @@ import React from 'react';
 
 export const Status = (props) => {
     let status;
-    if (props.winner) {
+    if (props.winnersResult.winner) {
         status = `** Habemus Winner **`;
-    } else if (props.winner === false){
+    } else if (props.winnersResult.winner === false){
         status = `Draw`;
     } else {
         status = `Next player: 

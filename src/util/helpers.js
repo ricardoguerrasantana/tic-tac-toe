@@ -68,18 +68,3 @@ export function calculateWinner(squares, playersName) {
      */
     return winnersResult;
 }
-
-export function highlightWinnerSquares(squaresStyle, highlightSquares, defaultStyle, highlightStyle) {
-    /**
-     * Store highlighting style in the styles array for every 
-     * winner square and normal styles for the others.
-     */
-    const newSquaresStyle = squaresStyle.map((style, index) => {
-        if (highlightSquares.includes(index)) {
-            return `${defaultStyle} ${highlightStyle}`;
-        }
-        return `${defaultStyle}`;
-    });
-    
-    return newSquaresStyle;
-}

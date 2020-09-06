@@ -13,7 +13,7 @@ export const GameRendering = (props) => {
     history[history.length - 1].squares.slice();
     const gameOver = (
         <GameOver
-            winner={props.winner}
+            winnersResult={props.winnersResult}
             resetGame={() => props.resetGame()}
         ></GameOver>
     );
@@ -30,13 +30,12 @@ export const GameRendering = (props) => {
                     <Board 
                         squares={currentSquares}
                         xIsNext={props.xIsNext} 
-                        winner={props.winner} 
-                        squaresStyle={props.squaresStyle} 
+                        winnersResult={props.winnersResult} 
                         handleClickSquare={(i) => {
                             return props.handleClickSquare(i);
                         }}
                     />
-                    {(props.winner || props.winner === false) ?
+                    {(props.winnersResult.winner || props.winnersResult.winner === false) ?
                      gameOver : resetGame} 
                 </div>
                 <div className="game-info">
@@ -56,7 +55,7 @@ export const GameRendering = (props) => {
                     ></PlayerName>
                     <Status
                         xIsNext={props.xIsNext} 
-                        winner={props.winner}
+                        winnersResult={props.winnersResult}
                     ></Status>
                     <MoveHistoryList
                         history={props.history}

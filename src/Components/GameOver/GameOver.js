@@ -2,8 +2,8 @@ import React from 'react';
 import { ResetGame } from '../ResetGame/ResetGame';
 
 export const GameOver = (props) => {
-    const text = props.winner ? 
-        <DisplayWinner winner={props.winner}/> : 
+    const text = props.winnersResult.winner ? 
+        <DisplayWinner winnersResult={props.winnersResult}/> : 
         <DisplayDraw/>;
     return (
         <div className="game-over">
@@ -23,7 +23,7 @@ const DisplayDraw = () => {
 const DisplayWinner = (props) => {
     return (
         <div>
-            <h1>*{props.winner}*</h1>
+            <h1>*{props.winnersResult.winner}*</h1>
             <h2>Winner</h2>
         </div>
     );
