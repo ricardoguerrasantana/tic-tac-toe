@@ -43,7 +43,6 @@ class GameContainer extends React.Component {
                 {col: 3, row: 3},
             ],
             ascendingOrder: true,
-            moveStyle: ["bold"], 
             player: {
                 "X": "X", 
                 "O": "O",
@@ -71,8 +70,6 @@ class GameContainer extends React.Component {
         //Determine if there is a winner due the last move 
         const winnersResult = 
             calculateWinner(currentSquares, this.state.player);
-        const moveStyle = 
-        this.state.moveStyle.slice(0 , this.state.moveNum + 1).map(() => "normal");
         this.setState({
             // Add the last set of game's moves to the array 
             // which track game's moves (unlike push() method, 
@@ -89,7 +86,6 @@ class GameContainer extends React.Component {
             winnersResult: winnersResult, 
             moveNum: this.state.moveNum + 1, 
             sequence: sequence.concat([i]),
-            moveStyle: moveStyle.concat(["bold"]),
         });
     }
     /**
@@ -108,14 +104,6 @@ class GameContainer extends React.Component {
         history[history.length - 1].squares.slice();
         const winnersResult = 
             calculateWinner(currentSquares, this.state.player);
-        const moveStyle = 
-        this.state.moveStyle.slice().map((style, index) => {
-            if (index === moveNum) {
-                return "bold";
-            }
-            return "normal";
-        });
-
         this.setState({
             // !(moveNum % 2) this is: because X starts 
             // first (moveNum 0) it is even, then module of 
@@ -125,7 +113,6 @@ class GameContainer extends React.Component {
             xIsNext: !(moveNum % 2), 
             winnersResult: winnersResult, 
             moveNum: moveNum, 
-            moveStyle: moveStyle,
         });
     }
 
@@ -164,7 +151,6 @@ class GameContainer extends React.Component {
                 sequence={this.state.sequence} 
                 locations={this.state.locations} 
                 ascendingOrder={this.state.ascendingOrder}
-                moveStyle={this.state.moveStyle}
                 player={this.state.player}
                 handleClickSquare={(i) => 
                     this.handleClickSquare(i)}

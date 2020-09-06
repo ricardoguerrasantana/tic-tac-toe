@@ -1,8 +1,8 @@
 import React from 'react';
 // Components
 import Board from '../Board/Board';
+import MoveHistoryList from '../MoveHistoryList/MoveHistoryList';
 import { Status } from '../Status/Status';
-import { MoveHistoryList } from '../MoveHistoryList/MoveHistoryList';
 import { GameOver } from '../GameOver/GameOver';
 import { ResetGame } from '../ResetGame/ResetGame';
 import { PlayerName } from '../PlayerName/PlayerName';
@@ -60,9 +60,9 @@ export const GameRendering = (props) => {
                     <MoveHistoryList
                         history={props.history}
                         sequence={props.sequence}
+                        moveNum={props.moveNum}
                         locations={props.locations}
                         ascendingOrder={props.ascendingOrder}
-                        moveStyle={props.moveStyle}
                         jumpTo={(moveNum) => props.jumpTo(moveNum)}
                         toggleOrder={() => props.toggleOrder()}
                     ></MoveHistoryList>
