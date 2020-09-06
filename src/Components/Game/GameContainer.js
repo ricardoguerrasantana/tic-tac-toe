@@ -42,7 +42,7 @@ class GameContainer extends React.Component {
                 {col: 2, row: 3},
                 {col: 3, row: 3},
             ],
-            ascendingOrder: true,
+            toggleMoveHistoryList: false,
             player: {
                 "X": "X", 
                 "O": "O",
@@ -118,8 +118,7 @@ class GameContainer extends React.Component {
 
     toggleOrder() {
         this.setState({
-            ascendingOrder: this.state.ascendingOrder ? 
-            false : true
+            toggleMoveHistoryList: !this.state.toggleMoveHistoryList
         });
     }
 
@@ -150,7 +149,7 @@ class GameContainer extends React.Component {
                 moveNum={this.state.moveNum}
                 sequence={this.state.sequence} 
                 locations={this.state.locations} 
-                ascendingOrder={this.state.ascendingOrder}
+                toggleMoveHistoryList={this.state.toggleMoveHistoryList}
                 player={this.state.player}
                 handleClickSquare={(i) => 
                     this.handleClickSquare(i)}
