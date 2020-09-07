@@ -3,12 +3,12 @@ import React from 'react';
 import { Square } from '../Square/Square';
 
 class Board extends React.Component {
-    highlightSquares(i) {
+    styleSquare(i) {
+        let style ="square";
         if (this.props.winnersResult.squares.includes(i)) {
-            return "highlighting-square square";
-        } else {
-            return "square";
-        }
+            style += " highlighting-square";
+        } 
+        return style;
     }
 
     renderSquare(i) {
@@ -16,8 +16,7 @@ class Board extends React.Component {
             <Square
                 key={i} 
                 value={this.props.squares[i]}
-                squareStyle=
-                    {this.highlightSquares(i)}
+                squareStyle={this.styleSquare(i)}
                 handleClickSquare={() => 
                     this.props.handleClickSquare(i)}
             />
