@@ -18,12 +18,28 @@ class GameContainer extends React.Component {
     }
 
     initialize() {
+        const col = 3;
+        const row = 3;
+
+        const qtyOfSquares = col * row;
+        const history = [{
+            squares: Array(qtyOfSquares).fill(null),
+        }];
+        
+        const locations = [];
+        for (let rowNum = 0; rowNum < row; rowNum++) {
+            for (let colNum = 0; colNum < col; colNum ++) {
+                locations.push({
+                    col: colNum + 1,
+                    row: rowNum + 1,
+                });
+            }
+        }
+
         return {
-            history: [
-                {
-                    squares: Array(9).fill(null),
-                }
-            ],
+            col: col,
+            row: row,
+            history: history,
             xIsNext: true,
             winnersResult: {
                 winner: null,
@@ -31,23 +47,13 @@ class GameContainer extends React.Component {
             },
             moveNum: 0, 
             sequence: ["start"],
-            locations: [
-                {col: 1, row: 1},
-                {col: 2, row: 1},
-                {col: 3, row: 1},
-                {col: 1, row: 2},
-                {col: 2, row: 2},
-                {col: 3, row: 2},
-                {col: 1, row: 3},
-                {col: 2, row: 3},
-                {col: 3, row: 3},
-            ],
+            locations: locations,
             toggleMoveHistoryList: false,
             player: {
                 "X": "X", 
                 "O": "O",
             },
-        }
+        };
     };
 
     handleClickSquare(i) {
@@ -87,6 +93,7 @@ class GameContainer extends React.Component {
             moveNum: this.state.moveNum + 1, 
             sequence: sequence.concat([i]),
         });
+        console.log(this.state);
     }
     /**
      * Show the move of the indicated moveNum
@@ -143,6 +150,8 @@ class GameContainer extends React.Component {
     render() {
         return (
             <GameRendering 
+                col={this.state.col} 
+                row={this.state.row} 
                 history={this.state.history}
                 xIsNext={this.state.xIsNext} 
                 winnersResult={this.state.winnersResult}

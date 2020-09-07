@@ -49,7 +49,7 @@ class Board extends React.Component {
 
     render() {
         return (
-            <div>{this.generateBoard(3 , 3)}</div>
+            <div>{this.generateBoard(this.props.col , this.props.row)}</div>
         );
     }
 }

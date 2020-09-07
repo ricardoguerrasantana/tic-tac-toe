@@ -28,6 +28,8 @@ export const GameRendering = (props) => {
         <div className="game">
                 <div className="game-board">
                     <Board 
+                        col={props.col} 
+                        row={props.row} 
                         squares={currentSquares}
                         xIsNext={props.xIsNext} 
                         winnersResult={props.winnersResult} 
