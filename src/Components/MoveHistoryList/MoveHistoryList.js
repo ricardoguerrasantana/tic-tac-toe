@@ -36,19 +36,28 @@ class MoveHistoryList extends React.Component {
             );
         });
 
+        moves.sort((firstEl, secondEl) => {
+            if  (this.props.toggleMoveHistoryList) {
+                return secondEl.key - firstEl.key;
+            } else {
+                return firstEl.key - secondEl.key;
+            }
+        });
+
         return (
             <div>
+                { moves.length > 1 ? (
                 <button
                     className="toggle" 
-                    onClick={() => this.props.toggleOrder()}
+                    onClick={() => this.props.toggleOrder("toggleMoveHistoryList")}
                 >
                     Toggle the List Order
                 </button>
+                ) : "" }
                 <p>Move number - Player - <br />
                 Location (column, Row)</p>
-                <ol>
-                {this.props.ascendingOrder ? 
-                moves : moves.slice().reverse()}
+                <ol reversed={this.props.toggleMoveHistoryList}>
+                {moves}
                 </ol>
                 <p>Press to go back to any <br /> 
                 move and continue playing</p>

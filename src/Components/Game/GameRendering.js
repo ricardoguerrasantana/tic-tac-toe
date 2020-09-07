@@ -62,9 +62,9 @@ export const GameRendering = (props) => {
                         sequence={props.sequence}
                         moveNum={props.moveNum}
                         locations={props.locations}
-                        ascendingOrder={props.ascendingOrder}
+                        toggleMoveHistoryList={props.toggleMoveHistoryList}
                         jumpTo={(moveNum) => props.jumpTo(moveNum)}
-                        toggleOrder={() => props.toggleOrder()}
+                        toggleOrder={(key) => props.toggleOrder(key)}
                     ></MoveHistoryList>
                 </div>
             </div>
