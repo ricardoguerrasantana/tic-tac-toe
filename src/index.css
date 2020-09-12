@@ -47,7 +47,7 @@ p {
   background: #ddd;
 }
 
-.game {
+.game-body {
   display: flex;
   flex-direction: row;
 }
@@ -56,8 +56,21 @@ p {
   margin-left: 20px;
 }
 
-.highlighting-square {
-  background: turquoise;
+.game-heading {
+  margin-bottom: 10px;
+}
+
+.player-settings {
+  margin-bottom: 5px;
+}
+
+.player-name-input-title {
+  display: inline-block;
+  margin-right: 5px;
+}
+
+.player-name-imput {
+  max-width: 80px;
 }
 
 img {
@@ -92,4 +105,28 @@ img {
 
 .bolder {
   font-weight: 900;
+}
+
+.player-color-button {
+  border: none;
+  border-radius: 5px;
+  margin-right: -1px;
+  margin-top: -1px;
+  margin-left: 5px;
+  margin-bottom: 0px;
+  padding: 3px;
+  text-align: center;
+  background: black;
+}
+
+.player-color-button:focus {
+  outline: none;
+}
+
+.kbd-navigation .player-color-button:focus {
+  background: #ddd;
+}
+
+.player-name-input {
+  font-weight: bold;
 }

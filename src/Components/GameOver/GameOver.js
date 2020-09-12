@@ -2,9 +2,22 @@ import React from 'react';
 import { ResetGame } from '../ResetGame/ResetGame';
 
 export const GameOver = (props) => {
-    const text = props.winnersResult.winner ? 
-        <DisplayWinner winnersResult={props.winnersResult}/> : 
-        <DisplayDraw/>;
+    let text;
+    if (props.winnersResult.winner) {  
+        const playerMark = 
+        getPlayerMarkByName(props.players, props.winnersResult.winner);
+        text = (
+        <div>
+            <h1>*<span className={`player${playerMark}-color`}>
+            {props.winnersResult.winner}</span>*</h1>
+            <h2>Winner</h2>
+        </div>
+        );
+    } else {
+        text = (
+            <h1>Draw!</h1>
+        );
+    }
     return (
         <div className="game-over">
             {text}
@@ -16,15 +29,6 @@ export const GameOver = (props) => {
     );
 }
 
-const DisplayDraw = () => {
-    return (<h1>Draw!</h1>);
-}
-
-const DisplayWinner = (props) => {
-    return (
-        <div>
-            <h1>*{props.winnersResult.winner}*</h1>
-            <h2>Winner</h2>
-        </div>
-    );
+function getPlayerMarkByName(object, name) {
+    return Object.keys(object).find(key => object[key].name === name);
 }

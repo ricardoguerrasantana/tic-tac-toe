@@ -1,4 +1,4 @@
-export function calculateWinner(squares, playersName) {
+export function calculateWinner(squares, players) {
     /**
      * Array indexes for posible winner lines.
      */
@@ -55,7 +55,7 @@ export function calculateWinner(squares, playersName) {
                 [a , b , c].filter(isNotInWinnersResultSquare)
             );
             winnersResult = {
-                winner: playersName[squares[a]],
+                winner: players[squares[a]].name,
                 squares: highlightSquares,
             };
         }

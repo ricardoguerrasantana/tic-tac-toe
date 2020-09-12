@@ -15,7 +15,9 @@ class MoveHistoryList extends React.Component {
             const sequence = this.props.sequence.slice();
             const i = sequence[moveNum];
             const text = (!moveNum ? <span>Game Start</span> : 
-                <span>move #{moveNum} - <b>{move.squares[i]}</b> (
+                <span>move #{moveNum} - {" "}
+                <b className={`player${move.squares[i]}-color`}>
+                {move.squares[i]}</b> (
                 {this.props.locations[i].col} , 
                 {this.props.locations[i].row})</span>);
             return (

@@ -15,6 +15,7 @@ class GameContainer extends React.Component {
         this.toggleOrder = this.toggleOrder.bind(this);
         this.resetGame = this.resetGame.bind(this);
         this.changePlayerName = this.changePlayerName.bind(this);
+        this.applyPlayersColor = this.applyPlayersColor.bind(this);
     }
 
     initialize() {
@@ -40,6 +41,7 @@ class GameContainer extends React.Component {
             col: col,
             row: row,
             history: history,
+            currentSquares: Array(qtyOfSquares).fill(null), 
             xIsNext: true,
             winnersResult: {
                 winner: null,
@@ -49,10 +51,16 @@ class GameContainer extends React.Component {
             sequence: ["start"],
             locations: locations,
             toggleMoveHistoryList: false,
-            player: {
-                "X": "X", 
-                "O": "O",
-            },
+            players: {
+                "X": {
+                    name: "X", 
+                    color: [0, 0, 0], 
+                }, 
+                "O": {
+                    name: "O", 
+                    color: [0, 0, 0], 
+                },
+            }, 
         };
     };
 
@@ -75,7 +83,7 @@ class GameContainer extends React.Component {
         this.state.sequence.slice(0 , this.state.moveNum + 1);
         //Determine if there is a winner due the last move 
         const winnersResult = 
-            calculateWinner(currentSquares, this.state.player);
+            calculateWinner(currentSquares, this.state.players);
         this.setState({
             // Add the last set of game's moves to the array 
             // which track game's moves (unlike push() method, 
@@ -88,6 +96,7 @@ class GameContainer extends React.Component {
                     }
                 ]
             ),
+            currentSquares: currentSquares, 
             xIsNext: !this.state.xIsNext,
             winnersResult: winnersResult, 
             moveNum: this.state.moveNum + 1, 
@@ -110,13 +119,14 @@ class GameContainer extends React.Component {
         const currentSquares = 
         history[history.length - 1].squares.slice();
         const winnersResult = 
-            calculateWinner(currentSquares, this.state.player);
+            calculateWinner(currentSquares, this.state.players);
         this.setState({
             // !(moveNum % 2) this is: because X starts 
             // first (moveNum 0) it is even, then module of 
             // a even number is 0, evaluated as false which 
             // is turned to the opposite by 
             // the Logical NOT operator (!) 
+            currentSquares: currentSquares,
             xIsNext: !(moveNum % 2), 
             winnersResult: winnersResult, 
             moveNum: moveNum, 
@@ -139,12 +149,126 @@ class GameContainer extends React.Component {
             value = playerMark;
         }
         this.setState({
-            player: Object.assign(
+            players: Object.assign(
                 {},
-                this.state.player,
-                { [playerMark]: value }
+                this.state.players,
+                { 
+                    [playerMark]: Object.assign(
+                        {},
+                        this.state.players[playerMark],
+                        {
+                            name: value,
+                        }
+                    )
+                }
             )
         });
+    }
+
+    applyPlayersColor() {
+        const playerXColor = this.formatColor(this.state.players.X.color);
+        const playerOColor = this.formatColor(this.state.players.O.color);
+
+        this.state.currentSquares.forEach((square, i) => {
+            const el = document.getElementById(`square ${i}`);
+            if (this.state.winnersResult.squares.includes(i)) {
+                if (square === 'X') {
+                    el.style.backgroundColor = playerXColor;
+                    el.style.color = "white";
+                } else if (square === "O") {
+                    el.style.backgroundColor = playerOColor;
+                    el.style.color = "white";
+                }
+            } else {
+                if (square === 'X') {
+                    el.style.backgroundColor = "white";
+                    el.style.color = playerXColor;
+                } else if (square === "O") {
+                    el.style.backgroundColor = "white";
+                    el.style.color = playerOColor;
+                } else {
+                    el.style.backgroundColor = "white";
+                    el.style.color = "black";
+                } 
+            }
+        });
+
+        const playerXElementsColor = document.getElementsByClassName("playerX-color");
+        Object.entries(playerXElementsColor).forEach(([key, el]) => {
+            el.style.color = playerXColor;
+        });
+
+        const playerOElementsColor = document.getElementsByClassName("playerO-color");
+        Object.entries(playerOElementsColor).forEach(([key, el]) => {
+            el.style.color = playerOColor;
+        });
+
+        const playerXElementsBacgroundColor = document.getElementsByClassName("playerX-background-color");
+        Object.entries(playerXElementsBacgroundColor).forEach(([key, el]) => {
+            el.style.backgroundColor = playerXColor;
+        });
+
+        const playerOElementsBacgroundColor = document.getElementsByClassName("playerO-background-color");
+        Object.entries(playerOElementsBacgroundColor).forEach(([key, el]) => {
+            el.style.backgroundColor = playerOColor;
+        });
+
+        const noneBackgroundColorElements = document.getElementsByClassName("none-background-color");
+        Object.entries(noneBackgroundColorElements).forEach(([key, el]) => {
+            el.style.backgroundColor = "none";
+        });
+
+        const whiteColorElements = document.getElementsByClassName("white-color");
+        Object.entries(whiteColorElements).forEach(([key, el]) => {
+            el.style.color = "white";
+        });
+    }
+
+    formatColor(arr) {
+        return `rgb(${arr.join(', ')})`;            
+    }
+
+    componentDidMount() {
+        this.applyPlayersColor();
+    }
+
+    componentDidUpdate() {
+        this.applyPlayersColor();
+    }
+
+    chooseDarkColor() {
+        let color;
+        do {
+            color = [];
+            for (let i = 0; i < 3; i++) {
+                color.push(Math.floor(Math.random() * 256));
+            }
+            console.log(this.islight(color));
+        } while (this.islight(color));
+
+        return color;
+    }
+
+    changeColor(playerMark) {
+        this.setState({
+            players: Object.assign(
+                {},
+                this.state.players,
+                {
+                    [playerMark]: Object.assign(
+                        {},
+                        this.state.players[playerMark], 
+                        {
+                            color: this.chooseDarkColor()
+                        }
+                    )
+                }
+            )
+        });
+    }
+
+    islight(color) {
+        return color.reduce((a, b) => a + b) > 127 * 3;
     }
 
     render() {
@@ -159,7 +283,7 @@ class GameContainer extends React.Component {
                 sequence={this.state.sequence} 
                 locations={this.state.locations} 
                 toggleMoveHistoryList={this.state.toggleMoveHistoryList}
-                player={this.state.player}
+                players={this.state.players}
                 handleClickSquare={(i) => 
                     this.handleClickSquare(i)}
                 jumpTo={(moveNum) => this.jumpTo(moveNum)}
@@ -167,6 +291,8 @@ class GameContainer extends React.Component {
                 resetGame={() => this.resetGame()}
                 changePlayerName={(e, playerMark) => 
                     this.changePlayerName(e, playerMark)}
+                changeColor={(playerMark) => 
+                    this.changeColor(playerMark)}
             ></GameRendering>
         );
     }

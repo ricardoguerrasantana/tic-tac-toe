@@ -3,12 +3,13 @@ import React from 'react';
 export const Status = (props) => {
     let status;
     if (props.winnersResult.winner) {
-        status = `** Habemus Winner **`;
+        status = (<p><b>** Habemus Winner **</b></p>);
     } else if (props.winnersResult.winner === false){
-        status = `Draw`;
+        status = (<p>Draw</p>);
     } else {
-        status = `Next player: 
-        ${props.xIsNext ? 'X' : 'O'}`;
+        status = (<p>Next player: 
+        <b className={`player${props.xIsNext ? 'X' : 'O'}-color`}>
+        {props.xIsNext ? 'X' : 'O'}</b></p>);
     }
     return (<div className="status">{status}</div>);
 }
