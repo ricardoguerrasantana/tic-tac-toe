@@ -4,11 +4,16 @@ import { Square } from '../Square/Square';
 
 class Board extends React.Component {
     renderSquare(i) {
+        const history = 
+            this.props.history.slice(0, this.props.moveNum + 1);
+        const currentSquares = 
+            history[history.length - 1].squares.slice();
+
         return (
             <Square
                 key={i} 
                 id={`square ${i}`}
-                value={this.props.squares[i]}
+                value={currentSquares[i]}
                 squareStyle={"square"}
                 handleClickSquare={() => 
                     this.props.handleClickSquare(i)}

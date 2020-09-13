@@ -16,6 +16,8 @@ class GameContainer extends React.Component {
         this.resetGame = this.resetGame.bind(this);
         this.changePlayerName = this.changePlayerName.bind(this);
         this.applyPlayersColor = this.applyPlayersColor.bind(this);
+        this.highlightMoveHistory = this.highlightMoveHistory.bind(this);
+        this.styleSquares = this.styleSquares.bind(this);
     }
 
     initialize() {
@@ -169,29 +171,7 @@ class GameContainer extends React.Component {
         const playerXColor = this.formatColor(this.state.players.X.color);
         const playerOColor = this.formatColor(this.state.players.O.color);
 
-        this.state.currentSquares.forEach((square, i) => {
-            const el = document.getElementById(`square ${i}`);
-            if (this.state.winnersResult.squares.includes(i)) {
-                if (square === 'X') {
-                    el.style.backgroundColor = playerXColor;
-                    el.style.color = "white";
-                } else if (square === "O") {
-                    el.style.backgroundColor = playerOColor;
-                    el.style.color = "white";
-                }
-            } else {
-                if (square === 'X') {
-                    el.style.backgroundColor = "white";
-                    el.style.color = playerXColor;
-                } else if (square === "O") {
-                    el.style.backgroundColor = "white";
-                    el.style.color = playerOColor;
-                } else {
-                    el.style.backgroundColor = "white";
-                    el.style.color = "black";
-                } 
-            }
-        });
+        this.styleSquares(this.state.sequence, true);
 
         const playerXElementsColor = document.getElementsByClassName("playerX-color");
         Object.entries(playerXElementsColor).forEach(([key, el]) => {
@@ -271,6 +251,62 @@ class GameContainer extends React.Component {
         return color.reduce((a, b) => a + b) > 127 * 3;
     }
 
+    highlightMoveHistory(i, active) {
+        if (active) {
+            console.log(this.state.moveNum);
+            const sequence = this.state.sequence.slice();
+            const endIndex = sequence.findIndex(el => el === i);
+            const currentSequence = [];
+            this.state.sequence.forEach((el, i) => {
+                if (i <= endIndex) {
+                    currentSequence.push(el);
+                }
+            });
+            console.log(i);
+            console.log(currentSequence);
+            this.styleSquares(currentSequence.slice(0, this.state.moveNum + 1), false);
+        } else {
+            this.styleSquares(this.state.sequence, true);
+        }
+    }
+
+    styleSquares(currentSequence, playMode) {
+        const playerXColor = this.formatColor(this.state.players.X.color);
+        const playerOColor = this.formatColor(this.state.players.O.color);
+
+        this.state.currentSquares.forEach((square, i) => {
+            const el = document.getElementById(`square ${i}`);
+            if (this.state.winnersResult.squares.includes(i)) {
+                if (square === 'X') {
+                    el.style.backgroundColor = playerXColor;
+                    el.style.color = "white";
+                } else if (square === "O") {
+                    el.style.backgroundColor = playerOColor;
+                    el.style.color = "white";
+                }
+                if (!playMode && !currentSequence.includes(i)) {
+                    el.style.backgroundColor = "dimgrey";
+                    el.style.color = "silver";
+                }
+            } else {
+                if (square === 'X') {
+                    el.style.backgroundColor = "white";
+                    el.style.color = playerXColor;
+                } else if (square === "O") {
+                    el.style.backgroundColor = "white";
+                    el.style.color = playerOColor;
+                } else {
+                    el.style.backgroundColor = "white";
+                    el.style.color = "black";
+                }
+                if (!playMode && !currentSequence.includes(i)) {
+                    el.style.backgroundColor = "silver";
+                    el.style.color = "dimgrey";    
+                }
+            }
+        });
+    }
+
     render() {
         return (
             <GameRendering 
@@ -293,6 +329,7 @@ class GameContainer extends React.Component {
                     this.changePlayerName(e, playerMark)}
                 changeColor={(playerMark) => 
                     this.changeColor(playerMark)}
+                highlightMoveHistory={(i, active) => this.highlightMoveHistory(i, active)}
             ></GameRendering>
         );
     }

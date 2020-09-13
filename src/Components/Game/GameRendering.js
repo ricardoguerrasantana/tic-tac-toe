@@ -8,9 +8,6 @@ import { ResetGame } from '../ResetGame/ResetGame';
 import { PlayerSettings } from '../PlayerSettings/PlayerSettings';
 
 export const GameRendering = (props) => {
-    const history = props.history.slice(0, props.moveNum + 1);
-    const currentSquares = 
-    history[history.length - 1].squares.slice();
     const gameOver = (
         <GameOver
             players={props.players}
@@ -52,9 +49,10 @@ export const GameRendering = (props) => {
                 <Board 
                     col={props.col} 
                     row={props.row} 
-                    squares={currentSquares}
+                    history={props.history} 
                     xIsNext={props.xIsNext} 
                     winnersResult={props.winnersResult} 
+                    moveNum={props.moveNum} 
                     handleClickSquare={(i) => {
                         return props.handleClickSquare(i);
                     }}
@@ -76,6 +74,8 @@ export const GameRendering = (props) => {
                         {props.toggleMoveHistoryList}
                     jumpTo={(moveNum) => props.jumpTo(moveNum)}
                     toggleOrder={(key) => props.toggleOrder(key)}
+                    highlightMoveHistory={(i, active) => 
+                        props.highlightMoveHistory(i, active)}
                 ></MoveHistoryList>
             </div>
         </div>

@@ -31,6 +31,8 @@ class MoveHistoryList extends React.Component {
                         specified move 
                         */
                         onClick={() => this.props.jumpTo(moveNum)}
+                        onMouseEnter={() => this.props.highlightMoveHistory(i, true)}
+                        onMouseLeave={() => this.props.highlightMoveHistory(i, false)}
                     >
                     {text}
                     </button>
