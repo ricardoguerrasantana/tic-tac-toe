@@ -1,8 +1,11 @@
 import React from 'react';
+import update from 'immutability-helper';
 // Helper Functions
 import { calculateWinner } from '../../util/helpers';
 // Pesentational Component
 import { GameRendering } from './GameRendering';
+
+let counter = 0;
 
 class GameContainer extends React.Component {
     constructor(props) {
@@ -39,6 +42,22 @@ class GameContainer extends React.Component {
             }
         }
 
+        let players;
+        if (counter++) {
+            players = update(this.state.players, {});
+        } else {
+            players = {
+                "X": {
+                    name: "X", 
+                    color: [0, 0, 0], 
+                }, 
+                "O": {
+                    name: "O", 
+                    color: [0, 0, 0], 
+                },
+            }
+        }
+
         return {
             col: col,
             row: row,
@@ -53,16 +72,7 @@ class GameContainer extends React.Component {
             sequence: ["start"],
             locations: locations,
             toggleMoveHistoryList: false,
-            players: {
-                "X": {
-                    name: "X", 
-                    color: [0, 0, 0], 
-                }, 
-                "O": {
-                    name: "O", 
-                    color: [0, 0, 0], 
-                },
-            }, 
+            players: players,
         };
     };
 
@@ -104,7 +114,6 @@ class GameContainer extends React.Component {
             moveNum: this.state.moveNum + 1, 
             sequence: sequence.concat([i]),
         });
-        console.log(this.state);
     }
     /**
      * Show the move of the indicated moveNum
@@ -223,7 +232,6 @@ class GameContainer extends React.Component {
             for (let i = 0; i < 3; i++) {
                 color.push(Math.floor(Math.random() * 256));
             }
-            console.log(this.islight(color));
         } while (this.islight(color));
 
         return color;
@@ -253,7 +261,6 @@ class GameContainer extends React.Component {
 
     highlightMoveHistory(i, active) {
         if (active) {
-            console.log(this.state.moveNum);
             const sequence = this.state.sequence.slice();
             const endIndex = sequence.findIndex(el => el === i);
             const currentSequence = [];
@@ -262,8 +269,6 @@ class GameContainer extends React.Component {
                     currentSequence.push(el);
                 }
             });
-            console.log(i);
-            console.log(currentSequence);
             this.styleSquares(currentSequence.slice(0, this.state.moveNum + 1), false);
         } else {
             this.styleSquares(this.state.sequence, true);
