@@ -1,3 +1,9 @@
+## The React's official tic-tac-toe tutorial
+
+This is another approach to the official solition (with additional challenges solved) that implements techniques that are fundamental to building any React application. 
+
+## 
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
