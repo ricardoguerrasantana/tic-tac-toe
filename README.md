@@ -1,6 +1,6 @@
 ## The React's official tic-tac-toe tutorial
 
-This is another approach to the official solition (with additional challenges solved) that implements techniques that are fundamental to building any React application. 
+This is another approach to React's official tic-tac-toe tutorial (with additional challenges solved) that implements techniques that are fundamental for building any React application. This project goes beyond the tutorial to address topics such as separating container components from presentational components, lifecycle methods for effectively manipulating DOM features like colours, and self-contained components. 
 
 ## 
 
